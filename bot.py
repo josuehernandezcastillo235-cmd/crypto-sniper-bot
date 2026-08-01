@@ -1,0 +1,29 @@
+from telegram import Bot
+import asyncio
+import os
+from strategy import analizar
+
+TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+
+async def main():
+    bot = Bot(token=TOKEN)
+
+    await bot.send_message(
+        chat_id=CHAT_ID,
+        text="₿ Crypto Sniper Bot iniciado correctamente 🚀"
+    )
+
+    while True:
+        señal = analizar()
+
+        if "COMPRA" in señal or "VENTA" in señal:
+            await bot.send_message(
+                chat_id=CHAT_ID,
+                text=señal
+            )
+
+        await asyncio.sleep(300)
+
+if __name__ == "__main__":
+    asyncio.run(main())
